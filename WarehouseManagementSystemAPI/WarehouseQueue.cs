@@ -25,6 +25,28 @@ namespace WarehouseManagementSystemAPI
         }
 
         /*
+         * Public property to directly provide length of queue
+         */
+        public int NumberOfUnits
+        {
+            get
+            {
+                return this.warehouseQueue.Count;
+            }
+        }
+
+        /*
+         * Public property to return new Enumerator object of warehouseQueue to calling code.
+         */
+        public IEnumerator<T> WarehouseQueueEnumerator
+        {
+            get
+            {
+                return this.warehouseQueue.GetEnumerator();
+            }
+        }
+
+        /*
          * Adding the warehouse unit to the actual queue.
          * Observe that, with this method call, the content of "warehouseQueue" is getting changed, hence we've to fire an event.
          */
