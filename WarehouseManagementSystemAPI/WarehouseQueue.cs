@@ -33,6 +33,12 @@ namespace WarehouseManagementSystemAPI
             this.warehouseQueue.Enqueue(unit);
 
             //Fire the event to print current warehouse unit message (entered the warehouse) and overall table of units as queue content has changed
+            if(this.eventQueueChanged != null)
+            {
+                EventData eventData = new EventData();
+                eventData.Message = string.Empty;
+                this.eventQueueChanged(this, eventData);
+            }
         }
 
         /*
@@ -44,6 +50,12 @@ namespace WarehouseManagementSystemAPI
             T nextUnit = this.warehouseQueue.Dequeue();
 
             //Fire the event to print current warehouse unit message (placed in warehouse) and overall table of units as queue content has changed.
+            if(this.eventQueueChanged != null)
+            {
+                EventData eventData = new EventData();
+                eventData.Message = string.Empty;
+                this.eventQueueChanged(this, eventData);
+            }
             return nextUnit;
         }
     }
