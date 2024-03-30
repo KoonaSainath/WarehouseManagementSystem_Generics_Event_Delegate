@@ -55,12 +55,7 @@ namespace WarehouseManagementSystemAPI
             this.warehouseQueue.Enqueue(unit);
 
             //Fire the event to print current warehouse unit message (entered the warehouse) and overall table of units as queue content has changed
-            if(this.eventQueueChanged != null)
-            {
-                EventData eventData = new EventData();
-                eventData.Message = string.Empty;
-                this.eventQueueChanged(this, eventData);
-            }
+            FireOnQueueChanged(unit);
         }
 
         /*
@@ -72,13 +67,22 @@ namespace WarehouseManagementSystemAPI
             T nextUnit = this.warehouseQueue.Dequeue();
 
             //Fire the event to print current warehouse unit message (placed in warehouse) and overall table of units as queue content has changed.
+            FireOnQueueChanged(nextUnit);
+            return nextUnit;
+        }
+
+        /*
+         * Common method to fire the event 
+         */
+        public void FireOnQueueChanged(T unit)
+        {
+            //The eventQueueChanged gets an object if it is subscribed anywhere
             if(this.eventQueueChanged != null)
             {
                 EventData eventData = new EventData();
                 eventData.Message = string.Empty;
                 this.eventQueueChanged(this, eventData);
             }
-            return nextUnit;
         }
     }
 
