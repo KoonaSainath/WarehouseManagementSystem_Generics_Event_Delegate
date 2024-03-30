@@ -2,6 +2,7 @@
 using WarehouseManagementSystem_Generics_Event_Delegate.Enums;
 using WarehouseManagementSystem_Generics_Event_Delegate.Factory;
 using WarehouseManagementSystem_Generics_Event_Delegate.WarehouseClasses;
+using WarehouseManagementSystemAPI;
 
 namespace WarehouseManagementSystem_Generic_Event_Delegate;
 public class Program
@@ -13,6 +14,27 @@ public class Program
         //Creating list of imaginary warehouse units
         GetWarehouseUnits(warehouseUnits);
 
+        WarehouseQueue<WarehouseUnit> warehouseQueue = new WarehouseQueue<WarehouseUnit>();
+        warehouseQueue.eventQueueChanged += WarehouseQueue_eventQueueChanged;
+
+        foreach(WarehouseUnit warehouseUnit in warehouseUnits)
+        {
+            //Raises event as queue content changes. WarehouseQueue_eventQueueChanged method gets invoked with relevant message in "eventData" object
+            warehouseQueue.AddUnit(warehouseUnit);
+            Thread.Sleep(3000);
+        }
+
+        foreach(WarehouseUnit warehouseUnit in warehouseUnits)
+        {
+            //Raises event as queue content changes. WarehouseQueue_eventQueueChanged method gets invoked with relevant message in "eventData" object
+            WarehouseUnit placedUnit = warehouseQueue.GetNextUnit();
+            Thread.Sleep(2000);
+        }
+    }
+
+    private static void WarehouseQueue_eventQueueChanged(WarehouseQueue<WarehouseUnit> sender, EventData eventData)
+    {
+        Console.Clear();
     }
 
     //Creates various types of instances of warehouse units and adds them to main list
